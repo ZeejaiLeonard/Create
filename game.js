@@ -18,7 +18,17 @@ function animate(){
 }
 
 function Game(){
+  this.map = [];
+  this.tileSize = 10;
 
+  this.init = function(){
+    for(var i = 0; i < 10; i++){
+      this.map.push([]);
+      for(var j = 0; j < 10; j++){
+        this.map[i].push(new Tile(new JSVector(i, j)));
+      }
+    }
+  }
 
   this.update = function(){
     this.render();
@@ -43,6 +53,16 @@ function Player(){
   this.render = function(){
     context.fillStyle = this.colour;
     context.fillRect(this.location.x, this.location.y, this.radius, this.radius);
+  }
+}
+
+function Tile(location){
+  this.cellLocation = location;
+  this.init = function(){
+    this.location = new JSVector(this.cellLocation.x * game.tileSize, this.cellLocation.y * game.cellLocation);
+    this.tileType = "grass";
+    this.seen = false;
+
   }
 }
 

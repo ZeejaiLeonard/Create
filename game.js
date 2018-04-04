@@ -8,7 +8,20 @@ function init(){
   context = canvas.getContext("2d");
   game = new Game();
   player = new Player();
+  startButton = new Button(document.createElement("button"), "Start");
+  startButton.onclick("You are in...");
   animate();
+}
+
+function Button(button, text){
+  this.button = button;
+  this.id = "button";
+  this.t = document.createTextNode(text);
+  this.button.appendChild(this.t);
+  document.body.appendChild(this.button);
+  this.button.onclick = function(message){
+    console.log(message);
+  }
 }
 
 function animate(){
@@ -31,37 +44,16 @@ function Game(){
   }
 
   this.update = function(){
-    this.render();
-  }
-
-  this.render = function(){
 
   }
+
 }
 
 function Player(){
-  this.location = new JSVector(0, 490);
-  this.colour = "rgba(0, 255, 0, 1)";
-  this.radius = 10;
+  this.location = "null";
   this.position = 0;
 
   this.update = function(){
-
-    this.render();
-  }
-
-  this.render = function(){
-    context.fillStyle = this.colour;
-    context.fillRect(this.location.x, this.location.y, this.radius, this.radius);
-  }
-}
-
-function Tile(location){
-  this.cellLocation = location;
-  this.init = function(){
-    this.location = new JSVector(this.cellLocation.x * game.tileSize, this.cellLocation.y * game.cellLocation);
-    this.tileType = "grass";
-    this.seen = false;
 
   }
 }

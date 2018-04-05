@@ -1,18 +1,23 @@
 window.onload = init;
-var game, canvas, context;
+var game, canvas, context, linebreak;
 
 function init(){
-  canvas = document.getElementById("cnv");
-  canvas.width = 1000;
-  canvas.height = 500;
-  context = canvas.getContext("2d");
+  // canvas = document.getElementById("cnv");
+  // canvas.width = 800;
+  // canvas.height = 400;
+  // context = canvas.getContext("2d");
   game = new Game();
   player = new Player();
-  startButton = new Button(document.createElement("button"), "Start");
-  startButton.onclick("You are in...");
+  var test = document.createElement("input");
+  //startButton.onclick("You are in...");
   animate();
 }
 
+function checkInput(){
+  document.element.appendChild(document.createElement("br"));
+  document.getElementById("wrapperDiv").appendChild(document.createTextNode(document.getElementById("bar").value));
+  console.log();
+}
 function Button(button, text){
   this.button = button;
   this.id = "button";

@@ -2,10 +2,10 @@ window.onload = init;
 var game, canvas, context, linebreak;
 
 function init(){
-  // canvas = document.getElementById("cnv");
-  // canvas.width = 800;
-  // canvas.height = 400;
-  // context = canvas.getContext("2d");
+  canvas = document.getElementById("cnv");
+  canvas.width = 0;
+  canvas.height = 0;
+  context = canvas.getContext("2d");
   game = new Game();
   player = new Player();
   var test = document.createElement("input");
@@ -14,10 +14,15 @@ function init(){
 }
 
 function checkInput(){
-  document.element.appendChild(document.createElement("br"));
-  document.getElementById("wrapperDiv").appendChild(document.createTextNode(document.getElementById("bar").value));
-  console.log();
+  var input = document.getElementById("bar").value;
+  document.getElementById("wrapperDiv").insertBefore(document.createTextNode(input), document.getElementById("wrapperDiv").lastChild);
+  document.getElementById("wrapperDiv").insertBefore(document.createElement("br"), document.getElementById("wrapperDiv").lastChild); //line break
+  document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("bar"));
+  document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("enter"));
+  //document.getElementById("wrapperDiv").appendChild(document.createTextNode(input));
+  //console.log();
 }
+
 function Button(button, text){
   this.button = button;
   this.id = "button";

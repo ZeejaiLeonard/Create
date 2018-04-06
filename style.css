@@ -1,9 +1,12 @@
 *{
   background-color: #662496;
+  /*display: block;*/
+  float: left;
+  margin-left: 5px;
+  text-align: left;
 }
 #wrapperDiv{
   margin-top: 100px;
-  text-align: center;
 }
 #cnv{
   background-color: white;

@@ -13,14 +13,16 @@ function init(){
   animate();
 }
 
-function checkInput(){
-  var input = document.getElementById("bar").value;
-  document.getElementById("wrapperDiv").insertBefore(document.createTextNode(input), document.getElementById("wrapperDiv").lastChild);
+function displayOutput(output){
+  document.getElementById("wrapperDiv").insertBefore(document.createTextNode(output), document.getElementById("wrapperDiv").lastChild);
   document.getElementById("wrapperDiv").insertBefore(document.createElement("br"), document.getElementById("wrapperDiv").lastChild); //line break
   document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("bar"));
   document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("enter"));
-  //document.getElementById("wrapperDiv").appendChild(document.createTextNode(input));
-  //console.log();
+}
+
+function checkInput(){
+  var input = document.getElementById("bar").value;
+  displayOutput(input);
 }
 
 function Button(button, text){

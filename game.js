@@ -1,23 +1,20 @@
 window.onload = init;
-var game, canvas, context, linebreak;
+var game, linebreak;
 
 function init(){
-  canvas = document.getElementById("cnv");
-  canvas.width = 0;
-  canvas.height = 0;
-  context = canvas.getContext("2d");
   game = new Game();
   player = new Player();
-  var test = document.createElement("input");
-  //startButton.onclick("You are in...");
   animate();
 }
 
+function pageScroll() {
+  window.scrollBy(0, 1);
+  scrolldelay = setTimeout(pageScroll, 10);
+}
+
 function displayOutput(output){
-  document.getElementById("wrapperDiv").insertBefore(document.createTextNode(output), document.getElementById("wrapperDiv").lastChild);
-  document.getElementById("wrapperDiv").insertBefore(document.createElement("br"), document.getElementById("wrapperDiv").lastChild); //line break
-  document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("bar"));
-  document.getElementById("wrapperDiv").insertAdjacentElement("beforeend", document.getElementById("enter"));
+  document.getElementById("story").appendChild(document.createTextNode(output));
+  document.getElementById("story").appendChild(document.createElement("br"));
 }
 
 function checkInput(){
@@ -25,21 +22,9 @@ function checkInput(){
   displayOutput(input);
 }
 
-function Button(button, text){
-  this.button = button;
-  this.id = "button";
-  this.t = document.createTextNode(text);
-  this.button.appendChild(this.t);
-  document.body.appendChild(this.button);
-  this.button.onclick = function(message){
-    console.log(message);
-  }
-}
-
 function animate(){
   requestAnimationFrame(animate);
-  game.update();
-  player.update();
+  pageScroll();
 }
 
 function Game(){
@@ -50,7 +35,7 @@ function Game(){
     for(var i = 0; i < 10; i++){
       this.map.push([]);
       for(var j = 0; j < 10; j++){
-        this.map[i].push(new Tile(new JSVector(i, j)));
+        this.map[i].push(j);
       }
     }
   }
@@ -71,18 +56,11 @@ function Player(){
 }
 
 window.addEventListener("keypress", function(event){
-  if (event.defaultPrevented) {
-    return;
-  }
-  switch(event.key){
-    case "ArrowDown":
-      player.position = (-1);
-      break;
-    case "ArrowUp":
-      player.position = (1);
+  switch(event.keyCode){
+    case 13:
+      checkInput();
       break;
     default:
-      player.position = (0);
       return;
   }
   event.preventDefault();

@@ -6,8 +6,11 @@ var mapConfig = {
   y: 3,
   z: 2
 }
-var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom"];
-var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern"];
+var gameConfig = {
+  maxPlayerInventory: 3
+}
+var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom", "cavern"];
+var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern", "mom's spaghetti", "banana slug"];
 var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase", "hole", "door"];
 
 
@@ -30,7 +33,13 @@ function checkInput() {
       displayOutput("You don't have any material possessions.");
     }
   } else if ( (input === "north") || (input === "n") ) {
-    displayOutput("north");
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
+      player.update(player.position.x, player.position.y + 1, player.position.z);
+    } else {
+      displayOutput("YOU FOOL");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through walls.")
+    }
   } else if ( (input === "south") || (input === "s") ) {
     displayOutput("south");
   } else if ( (input === "east") || (input === "e") ) {

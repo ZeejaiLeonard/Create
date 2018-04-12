@@ -1,12 +1,14 @@
 window.onload = init;
 var game = new Game();
 var player = new Player();
+var mapConfig = {
+  x: 4,
+  y: 3,
+  z: 2
+}
 var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom"];
 var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern"];
-var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase"];
-
-
-
+var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase", "hole", "door"];
 
 
 function init() {
@@ -17,20 +19,39 @@ function init() {
 }
 
 
-
-
-
-function checkInput(){
+function checkInput() {
   var input = document.getElementById("bar").value;
   displayOutput(">>>" + input);
-  if (input === "inventory") {
+  if ( input === "inventory" ) {
     player.inventory.forEach(function(element){
       displayOutput(element);
     });
-    if (!player.inventory.length) {
+    if ( !player.inventory.length ) {
       displayOutput("You don't have any material possessions.");
     }
-  } else if (input === "help") {
+  } else if ( (input === "north") || (input === "n") ) {
+    displayOutput("north");
+  } else if ( (input === "south") || (input === "s") ) {
+    displayOutput("south");
+  } else if ( (input === "east") || (input === "e") ) {
+    displayOutput("east");
+  } else if ( (input === "west") || (input === "w") ) {
+    displayOutput("west");
+  } else if ( input === "up" ) {
+    displayOutput("up");
+  } else if ( input === "down" ) {
+    displayOutput("down");
+  } else if ( input === "look" ) {
+    displayOutput("look");
+  } else if ( input === "drop" ) {
+    displayOutput("drop what");
+  } else if ( input === "keep" ) {
+    displayOutput("keep what");
+  } else if ( (input === "restart") || (input === "again") || (input === "new game") ) {
+    displayOutput("I knew you would give up, you miserable shrimp. QUITTER");
+    displayOutput(" ");
+    init();
+  } else if ( input === "help" ) {
     displayOutput("*disappointed sigh*");
     displayOutput("Seriously? I hope you know life doesn't work like this.");
     displayOutput("HELP");
@@ -39,40 +60,38 @@ function checkInput(){
     displayOutput("   drop _: removes specified item from inventory");
     displayOutput("   keep _: adds specified item to inventory");
     displayOutput("   look: see what is around you");
-    displayOutput("   move _: moves specified item");
-    displayOutput("   open _: opens specified item");
+    displayOutput("   You can figure out the rest on your own.");
   } else {
-    displayOutput("*exasperated sigh*");
-    displayOutput("Speak UP, child.");
+    displayOutput("*elongated exasperated sigh*");
+    displayOutput("English, please.");
   }
   displayOutput(" ");
   document.getElementById("bar").value = "";
+  window.scrollTo(0,document.body.scrollHeight);
 }
+
 
 //KEEP: check player inventory capacity
 
 
 function animate() {
   requestAnimationFrame(animate);
-  pageScroll();
+  //pageScroll();
 }
+
 
 
 //Game
 function Game() {
   this.init = function() {
     this.map = [];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < mapConfig.x; i++) { //across
       this.map.push([]);
-      for (var j = 0; j < 3; j++) {
-        //this.map[i].push(new Room(rooms[generateRandomInt(rooms.length)]));
+      for (var j = 0; j < mapConfig.y; j++) { //down
         this.map[i].push([]);
-        for(var k = 0; k < 2; k++) {
+        for(var k = 0; k < mapConfig.z; k++) { //level
           var room = new Room();
-          room.init(rooms[generateRandomInt(rooms.length)]);
-          var object = new Object();
-          object.init(objects[generateRandomInt(objects.length)]);
-          room.contents.push(object);
+          room.init(rooms[generateRandomInt(rooms.length)], new JSVector(i, j, k));
           this.map[i][j].push(room);
         }
       }
@@ -82,18 +101,41 @@ function Game() {
 }
 
 
-
 //Room
 function Room() {
-  this.init = function(name) {
+  this.init = function(name, vector) {
     this.name = name;
+    this.location = vector;
     this.contents = [];
+    this.features = [];
+    this.validMoves = [];
     this.scene = "";
+
+    var object = new Object();
+    object.init(objects[generateRandomInt(objects.length)]);
+    this.contents.push(object);
+    this.features.push(features[generateRandomInt(features.length)]);
+
+    if ( vector.z < mapConfig.z - 1 ) {
+      this.validMoves.push("d"); // down
+    }
+    if ( vector.z > 0 ) {
+      this.validMoves.push("u"); // up
+    }
+    if ( vector.y < mapConfig.y - 1 ) {
+      this.validMoves.push("s"); // south
+    }
+    if ( vector.y > 0 ) {
+      this.validMoves.push("n"); // north
+    }
+    if ( vector.x < mapConfig.x - 1 ) {
+      this.validMoves.push("e"); // east
+    }
+    if ( vector.x > 0 ) {
+      this.validMoves.push("w"); // west
+    }
   }
 }
-
-
-
 
 
 //Object
@@ -104,7 +146,6 @@ function Object() {
     this.light = false;
     this.open = false;
     this.magic = false;
-    //"shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key"
     if ( (name === "shiny sword") || (name === "rusty dagger") ) {
       this.weapon = true;
     } else if ( name === "key" ) {
@@ -129,10 +170,6 @@ function Player() {
   this.update = function(x, y, z) {
     this.position = new JSVector(x, y, z);
   }
-  // this.checkInventory(){
-  //   if(this.inventory.length === 4){
-  //
-  //   }
 }
 
 

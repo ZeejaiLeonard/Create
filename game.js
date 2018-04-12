@@ -1,21 +1,37 @@
 window.onload = init;
-var game;
+var game = new Game();
+var player = new Player();
 var rooms = ["hall", "dungeon", "waterfall"];
+var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight"];
 
 
 function init(){
-  game = new Game();
-  player = new Player();
+  displayOutput("You are in a room.");
+  game.init();
+  player.init();
   animate();
 }
 
 function checkInput(){
   var input = document.getElementById("bar").value;
+  displayOutput(">>>" + input);
   if (input === "inventory") {
     displayOutput(player.inventory[0]);
+  } else if (input === "help"){
+    displayOutput("HELP");
+    displayOutput("   north, south, east, west, up, down: directions");
+    displayOutput("   inventory: list of items in inventory");
+    displayOutput("   drop _: removes specified item from inventory");
+    displayOutput("   keep _: adds specified item to inventory");
+    displayOutput("   look: see what is around you");
+    displayOutput("   move _: moves specified item");
+    displayOutput("   open _: opens specified item");
   } else {
-    displayOutput(input);
+    displayOutput("*huffs*");
+    displayOutput("Speak up, child.");
   }
+  displayOutput(" ");
+  document.getElementById("bar").value = "";
 }
 
 function animate(){
@@ -23,40 +39,49 @@ function animate(){
   pageScroll();
 }
 
+//Game
 function Game(){
-  this.map = [];
-  this.tileSize = 10;
-  //this.playerPosition = new JSVector(0, 0);
-
   this.init = function(){
-    for (var i = 0; i < 10; i++) {
+    this.map = [];
+    for (var i = 0; i < 4; i++) {
       this.map.push([]);
-      for (var j = 0; j < 10; j++) {
+      for (var j = 0; j < 3; j++) {
         this.map[i].push(new Room(rooms[generateRandomInt(rooms.length)]));
+        //this.map[i].push([]);
+        // for(var k = 0; k < 2; k++){
+        //   this.map[i][j].push(new Room(rooms[generateRandomInt(rooms.length)]));
+        // }
       }
     }
     //organize
   }
 }
 
+//Room
 function Room(name){
   this.name = name;
   this.contents = [];
   this.scene = "";
 }
 
+//Object
 function Object(){
+  this.name = "";
   this.health = 0;
 }
 
+//Player
 function Player(){
-  this.position = new JSVector(0, 0);
-  this.inventory = [];
-
+  this.init = function(){
+    this.position = new JSVector(0, 0);
+    this.inventory = [];
+  }
   this.update = function(locationVector){
     this.position = locationVector;
   }
 }
+
+//Functionality
 
 function generateRandomInt(max){
   return Math.floor(Math.random() * max);

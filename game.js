@@ -1,23 +1,38 @@
 window.onload = init;
 var game = new Game();
 var player = new Player();
-var rooms = ["hall", "dungeon", "waterfall"];
-var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight"];
+var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom"];
+var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern"];
+var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase"];
 
 
-function init(){
+
+
+
+function init() {
   displayOutput("You are in a room.");
   game.init();
   player.init();
   animate();
 }
 
+
+
+
+
 function checkInput(){
   var input = document.getElementById("bar").value;
   displayOutput(">>>" + input);
   if (input === "inventory") {
-    displayOutput(player.inventory[0]);
-  } else if (input === "help"){
+    player.inventory.forEach(function(element){
+      displayOutput(element);
+    });
+    if (!player.inventory.length) {
+      displayOutput("You don't have any material possessions.");
+    }
+  } else if (input === "help") {
+    displayOutput("*disappointed sigh*");
+    displayOutput("Seriously? I hope you know life doesn't work like this.");
     displayOutput("HELP");
     displayOutput("   north, south, east, west, up, down: directions");
     displayOutput("   inventory: list of items in inventory");
@@ -27,62 +42,103 @@ function checkInput(){
     displayOutput("   move _: moves specified item");
     displayOutput("   open _: opens specified item");
   } else {
-    displayOutput("*huffs*");
-    displayOutput("Speak up, child.");
+    displayOutput("*exasperated sigh*");
+    displayOutput("Speak UP, child.");
   }
   displayOutput(" ");
   document.getElementById("bar").value = "";
 }
 
-function animate(){
+//KEEP: check player inventory capacity
+
+
+function animate() {
   requestAnimationFrame(animate);
   pageScroll();
 }
 
+
 //Game
-function Game(){
-  this.init = function(){
+function Game() {
+  this.init = function() {
     this.map = [];
     for (var i = 0; i < 4; i++) {
       this.map.push([]);
       for (var j = 0; j < 3; j++) {
-        this.map[i].push(new Room(rooms[generateRandomInt(rooms.length)]));
-        //this.map[i].push([]);
-        // for(var k = 0; k < 2; k++){
-        //   this.map[i][j].push(new Room(rooms[generateRandomInt(rooms.length)]));
-        // }
+        //this.map[i].push(new Room(rooms[generateRandomInt(rooms.length)]));
+        this.map[i].push([]);
+        for(var k = 0; k < 2; k++) {
+          var room = new Room();
+          room.init(rooms[generateRandomInt(rooms.length)]);
+          var object = new Object();
+          object.init(objects[generateRandomInt(objects.length)]);
+          room.contents.push(object);
+          this.map[i][j].push(room);
+        }
       }
     }
     //organize
   }
 }
 
+
+
 //Room
-function Room(name){
-  this.name = name;
-  this.contents = [];
-  this.scene = "";
+function Room() {
+  this.init = function(name) {
+    this.name = name;
+    this.contents = [];
+    this.scene = "";
+  }
 }
+
+
+
+
 
 //Object
-function Object(){
-  this.name = "";
-  this.health = 0;
+function Object() {
+  this.init = function(name) {
+    this.name = name;
+    this.weapon = false;
+    this.light = false;
+    this.open = false;
+    this.magic = false;
+    //"shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key"
+    if ( (name === "shiny sword") || (name === "rusty dagger") ) {
+      this.weapon = true;
+    } else if ( name === "key" ) {
+      this.open = true;
+    } else if ( (name === "flashlight") || (name === "battery-operated lantern") ) {
+      this.light = true;
+    } else if ( (name === "mysterious potion") || (name === "broken crystal") ) {
+      this.magic = true;
+    }
+  }
 }
+
+
+
 
 //Player
-function Player(){
-  this.init = function(){
-    this.position = new JSVector(0, 0);
+function Player() {
+  this.init = function() {
+    this.position = new JSVector(0, 0, 0);
     this.inventory = [];
   }
-  this.update = function(locationVector){
-    this.position = locationVector;
+  this.update = function(x, y, z) {
+    this.position = new JSVector(x, y, z);
   }
+  // this.checkInventory(){
+  //   if(this.inventory.length === 4){
+  //
+  //   }
 }
 
-//Functionality
 
+
+
+//Functionality
 function generateRandomInt(max){
   return Math.floor(Math.random() * max);
 }

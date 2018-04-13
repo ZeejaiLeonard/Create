@@ -149,7 +149,7 @@ function doCommand(input) {
   } else if ( input.includes("east") || (input === "e") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("e")) {
       player.update(player.position.x + 1, player.position.y, player.position.z);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("You imbecile");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -158,7 +158,7 @@ function doCommand(input) {
   } else if ( input.includes("west") || (input === "w") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("w")) {
       player.update(player.position.x - 1, player.position.y, player.position.z);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("You imbecile");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -167,7 +167,7 @@ function doCommand(input) {
   } else if ( input.includes("north") || (input === "n") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
       player.update(player.position.x, player.position.y - 1, player.position.z);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("YOU FOOL");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -176,7 +176,7 @@ function doCommand(input) {
   } else if ( input.includes("south") || (input === "s") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("s")) {
       player.update(player.position.x, player.position.y + 1, player.position.z);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("Ya dumb meatball");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -185,7 +185,7 @@ function doCommand(input) {
   } else if ( input.includes("up") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
       player.update(player.position.x, player.position.y, player.position.z + 1);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("'[JUHYGTFRDS]'");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -194,7 +194,7 @@ function doCommand(input) {
   } else if ( input.includes("down") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
       player.update(player.position.x, player.position.y, player.position.z - 1);
-      displayOutput(player.position.x, player.position.y, player.position.z);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
       displayOutput("GHJKJGFHGJKJFHGHJ");
       displayOutput("Are you trying to get a concussion? Honestly.");

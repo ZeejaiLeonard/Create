@@ -25,87 +25,12 @@ function init() {
 function checkInput() {
   var input = document.getElementById("bar").value;
   displayOutput(">>>" + input);
-  if ( input.toUpperCase() === input) {
+  if ( input.toUpperCase() === input ) {
     displayOutput("DON'T YOU DARE RAISE YOUR VOICE AT ME");
-  } else if ( input === "inventory" ) {
-    player.inventory.forEach(function(element){
-      displayOutput(element);
-    });
-    if ( !player.inventory.length ) {
-      displayOutput("You don't have any material possessions.");
-    }
-  } else if ( (input === "east") || (input === "e") ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("e")) {
-      player.update(player.position.x + 1, player.position.y, player.position.z);
-    } else {
-      displayOutput("You imbecile");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
-    }
-  } else if ( (input === "west") || (input === "w") ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("w")) {
-      player.update(player.position.x - 1, player.position.y, player.position.z);
-    } else {
-      displayOutput("You imbecile");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
-    }
-  } else if ( (input === "north") || (input === "n") ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
-      player.update(player.position.x, player.position.y - 1, player.position.z);
-    } else {
-      displayOutput("YOU FOOL");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
-    }
-  } else if ( (input === "south") || (input === "s") ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("s")) {
-      player.update(player.position.x, player.position.y + 1, player.position.z);
-    } else {
-      displayOutput("Ya dumb meatball");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
-    }
-  } else if ( input === "up" ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
-      player.update(player.position.x, player.position.y, player.position.z + 1);
-    } else {
-      displayOutput("'[JUHYGTFRDS]'");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("DSHJKCDERTHNJMUKDEW")
-    }
-  } else if ( input === "down" ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
-      player.update(player.position.x, player.position.y, player.position.z - 1);
-    } else {
-      displayOutput("GHJKJGFHGJKJFHGHJ");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("POIUYTREWSDFGHILMNBVCF")
-    }
-  } else if ( input === "look" ) {
-    displayOutput("look");
-  } else if ( input === "drop" ) {
-    displayOutput("drop what");
-  } else if ( input === "keep" ) {
-    displayOutput("keep what");
-  } else if ( (input === "restart") || (input === "again") || (input === "new game") ) {
-    displayOutput("I knew you would give up, you miserable shrimp. QUITTER");
-    displayOutput(" ");
-    init();
-  } else if ( input === "help" ) {
-    displayOutput("*disappointed sigh*");
-    displayOutput("Seriously? I hope you know life doesn't work like this.");
-    displayOutput("HELP");
-    displayOutput("   north, south, east, west, up, down: directions");
-    displayOutput("   inventory: list of items in inventory");
-    displayOutput("   drop _: removes specified item from inventory");
-    displayOutput("   keep _: adds specified item to inventory");
-    displayOutput("   look: see what is around you");
-    displayOutput("   You can figure out the rest on your own.");
-  } else {
-    displayOutput("*elongated exasperated sigh*");
-    displayOutput("English, please.");
   }
+  input = input.toLowerCase();
+
+  doCommand(input);
   displayOutput(" ");
   document.getElementById("bar").value = "";
   window.scrollTo(0,document.body.scrollHeight);
@@ -213,7 +138,96 @@ function Player() {
   }
 }
 
-
+function doCommand(input) {
+  if ( input.includes("inventory") || input.includes("stuff") ) {
+    player.inventory.forEach(function(element){
+      displayOutput(element);
+    });
+    if ( !player.inventory.length ) {
+      displayOutput("You don't have any material possessions.");
+    }
+  } else if ( input.includes("east") || (input === "e") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("e")) {
+      player.update(player.position.x + 1, player.position.y, player.position.z);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("You imbecile");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through walls.")
+    }
+  } else if ( input.includes("west") || (input === "w") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("w")) {
+      player.update(player.position.x - 1, player.position.y, player.position.z);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("You imbecile");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through walls.")
+    }
+  } else if ( input.includes("north") || (input === "n") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
+      player.update(player.position.x, player.position.y - 1, player.position.z);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("YOU FOOL");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through walls.")
+    }
+  } else if ( input.includes("south") || (input === "s") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("s")) {
+      player.update(player.position.x, player.position.y + 1, player.position.z);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("Ya dumb meatball");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through walls.")
+    }
+  } else if ( input.includes("up") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
+      player.update(player.position.x, player.position.y, player.position.z + 1);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("'[JUHYGTFRDS]'");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("DSHJKCDERTHNJMUKDEW")
+    }
+  } else if ( input.includes("down") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
+      player.update(player.position.x, player.position.y, player.position.z - 1);
+      displayOutput(player.position.x, player.position.y, player.position.z);
+    } else {
+      displayOutput("GHJKJGFHGJKJFHGHJ");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("POIUYTREWSDFGHILMNBVCF")
+    }
+  } else if ( input.includes("look") ) {
+    displayOutput("look");
+  } else if ( input.includes("drop") ) {
+    displayOutput("drop what");
+  } else if ( input.includes("keep") ) {
+    displayOutput("keep what");
+  } else if ( (input === "restart") || (input === "again") || (input === "new game") || (input === "quit") ) {
+    displayOutput("I knew you would give up, you miserable shrimp. QUITTER");
+    displayOutput(" ");
+    displayOutput(" ");
+    displayOutput(" ");
+    displayOutput(" ");
+    init();
+  } else if ( input === "help" ) {
+    displayOutput("*disappointed sigh*");
+    displayOutput("Seriously? I hope you know life doesn't work like this.");
+    displayOutput("HELP");
+    displayOutput("   north, south, east, west, up, down: directions");
+    displayOutput("   inventory: list of items in inventory");
+    displayOutput("   drop _: removes specified item from inventory");
+    displayOutput("   keep _: adds specified item to inventory");
+    displayOutput("   look: see what is around you");
+    displayOutput("   You can figure out the rest on your own.");
+  } else {
+    displayOutput("*elongated exasperated sigh*");
+    displayOutput("English, please.");
+  }
+}
 
 
 //Functionality

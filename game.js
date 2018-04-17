@@ -42,7 +42,6 @@ function checkInput() {
 
 function animate() {
   requestAnimationFrame(animate);
-  //pageScroll();
 }
 
 
@@ -153,16 +152,16 @@ function doCommand(input) {
     } else {
       displayOutput("You imbecile");
       displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
+      displayOutput("Last I checked, you are not able to go through walls.");
     }
   } else if ( input.includes("west") || (input === "w") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("w")) {
       player.update(player.position.x - 1, player.position.y, player.position.z);
       displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
-      displayOutput("You imbecile");
+      displayOutput("You trilobite");
       displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
+      displayOutput("Last I checked, you are not able to go through walls.");
     }
   } else if ( input.includes("north") || (input === "n") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
@@ -171,7 +170,7 @@ function doCommand(input) {
     } else {
       displayOutput("YOU FOOL");
       displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
+      displayOutput("Last I checked, you are not able to go through walls.");
     }
   } else if ( input.includes("south") || (input === "s") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("s")) {
@@ -180,25 +179,25 @@ function doCommand(input) {
     } else {
       displayOutput("Ya dumb meatball");
       displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("Last I checked, you are not able to go through walls.")
+      displayOutput("Last I checked, you are not able to go through walls.");
     }
   } else if ( input.includes("up") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
-      player.update(player.position.x, player.position.y, player.position.z + 1);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
-    } else {
-      displayOutput("'[JUHYGTFRDS]'");
-      displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("DSHJKCDERTHNJMUKDEW")
-    }
-  } else if ( input.includes("down") ) {
-    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
       player.update(player.position.x, player.position.y, player.position.z - 1);
       displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
     } else {
-      displayOutput("GHJKJGFHGJKJFHGHJ");
+      displayOutput("I smell a GNASHGAB (it's a real word--look it up) ");
       displayOutput("Are you trying to get a concussion? Honestly.");
-      displayOutput("POIUYTREWSDFGHILMNBVCF")
+      displayOutput("Last I checked, you are not able to go through the ceiling.");
+    }
+  } else if ( input.includes("down") ) {
+    if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
+      player.update(player.position.x, player.position.y, player.position.z + 1);
+      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+    } else {
+      displayOutput("Back in my day, noodles weren't THIS stupid");
+      displayOutput("Are you trying to get a concussion? Honestly.");
+      displayOutput("Last I checked, you are not able to go through the floor.");
     }
   } else if ( input.includes("look") ) {
     displayOutput("look");
@@ -216,7 +215,7 @@ function doCommand(input) {
   } else if ( input === "help" ) {
     displayOutput("*disappointed sigh*");
     displayOutput("Seriously? I hope you know life doesn't work like this.");
-    displayOutput("HELP");
+    displayOutput("HELP:");
     displayOutput("   north, south, east, west, up, down: directions");
     displayOutput("   inventory: list of items in inventory");
     displayOutput("   drop _: removes specified item from inventory");
@@ -233,11 +232,6 @@ function doCommand(input) {
 //Functionality
 function generateRandomInt(max){
   return Math.floor(Math.random() * max);
-}
-
-function pageScroll() {
-  window.scrollBy(0, 1);
-  scrolldelay = setTimeout(pageScroll, 10);
 }
 
 function displayOutput(output){

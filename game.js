@@ -202,6 +202,16 @@ function doCommand(input) {
   } else if ( input.includes("look") ) {
     displayOutput("look");
   } else if ( input.includes("drop") ) {
+    objects.forEach(function(element){
+      let coherent = false;
+      if ( input.includes(element) ) {
+        coherent = true;
+        let valid = false;
+        if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) {
+          valid = true;
+        }
+      }
+    });
     displayOutput("drop what");
   } else if ( input.includes("keep") ) {
     displayOutput("keep what");

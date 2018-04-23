@@ -100,6 +100,14 @@ function Room() {
       this.validMoves.push("w"); // west
     }
   }
+
+  this.look = function(){
+    this.contents.forEach ( function(element) {
+      let stuff += element.name;
+    } );
+    this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains a " + stuff + ".";
+    displayOutput(this.scene);
+  }
 }
 
 
@@ -200,15 +208,20 @@ function doCommand(input) {
       displayOutput("Last I checked, you are not able to go through the floor.");
     }
   } else if ( input.includes("look") ) {
-    displayOutput("look");
+    game.map[player.position.x][player.position.y][player.position.z].look();
   } else if ( input.includes("drop") ) {
-    objects.forEach(function(element){
+    objects.forEach(function(element) {
       let coherent = false;
       if ( input.includes(element) ) {
         coherent = true;
         let valid = false;
         if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) {
           valid = true;
+          if ( player.inventory.includes(element) ) {
+            displayOutput("drop WHAT");
+            checkInput();
+          }
+          displayOutput("yeah");
         }
       }
     });

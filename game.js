@@ -16,6 +16,7 @@ var features = ["trap door", "window", "refrigerator", "portal", "rickety stairc
 
 function init() {
   displayOutput("You are in a room.");
+  displayOutput(" ");
   game.init();
   player.init();
   animate();
@@ -102,10 +103,11 @@ function Room() {
   }
 
   this.look = function(){
+    let stuff = "";
     this.contents.forEach ( function(element) {
-      let stuff += element.name;
+      stuff += element.name + ", ";
     } );
-    this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains a " + stuff + ".";
+    this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains: " + stuff + ".";
     displayOutput(this.scene);
   }
 }
@@ -210,22 +212,51 @@ function doCommand(input) {
   } else if ( input.includes("look") ) {
     game.map[player.position.x][player.position.y][player.position.z].look();
   } else if ( input.includes("drop") ) {
+    displayOutput("drop WHAT");
+    document.getElementById("bar").value = "";
+
+    let i = document.getElementById("bar").value;
+    console.log(i);
     objects.forEach(function(element) {
-      let coherent = false;
-      if ( input.includes(element) ) {
-        coherent = true;
-        let valid = false;
-        if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) {
-          valid = true;
-          if ( player.inventory.includes(element) ) {
-            displayOutput("drop WHAT");
-            checkInput();
-          }
-          displayOutput("yeah");
+      let valid = false;
+      if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) {
+        valid = true;
+        if ( player.inventory.includes(element) ) {
+          displayOutput("drop WHAT");
+          console.log("no");
+          checkInput();
         }
+        displayOutput("yeah");
+      } else {
+        displayOutput("You do not have a " + element + " in your inventory.");
       }
+      console.log("drop thing");
     });
-    displayOutput("drop what");
+    // } else {
+    //   displayOutput("I do not know what a " + element + " is.");
+    // }
+    // if ( input.includes(element) ) {
+    //
+    // }
+
+    // displayOutput("drop WHAT");
+    // document.getElementById("bar").value = "";
+    // let i = document.getElementById("bar").value;
+    // displayOutput(">>>" + i);
+    // input.toLowerCase();
+    // console.log(i);
+    // //document.getElementById("bar").value = "";
+    // //window.scrollTo(0,document.body.scrollHeight);
+    // //console.log("no");
+    // checkInput();
+    // displayOutput("yes");
+    // // let coherent = false;
+    // // if ( input.includes(element) ) {
+    // //   coherent = true;
+    // // } else {
+    // //
+    // // }
+    //displayOutput("drop what");
   } else if ( input.includes("keep") ) {
     displayOutput("keep what");
   } else if ( (input === "restart") || (input === "again") || (input === "new game") || (input === "quit") ) {
@@ -266,6 +297,7 @@ window.addEventListener("keypress", function(event){
   switch(event.keyCode){
     case 13:
       checkInput();
+      console.log("enter");
       break;
     default:
       return;

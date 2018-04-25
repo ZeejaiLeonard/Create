@@ -212,53 +212,41 @@ function doCommand(input) {
   } else if ( input.includes("look") ) {
     game.map[player.position.x][player.position.y][player.position.z].look();
   } else if ( input.includes("drop") ) {
-    displayOutput("drop WHAT");
-    document.getElementById("bar").value = "";
-
-    let i = document.getElementById("bar").value;
-    console.log(i);
+    let valid = false;
+    let has = false;
     objects.forEach(function(element) {
-      let valid = false;
-      if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) {
+      if ( input.includes(element) ) { // valid
         valid = true;
-        if ( player.inventory.includes(element) ) {
-          displayOutput("drop WHAT");
-          console.log("no");
-          checkInput();
+        if ( player.inventory.includes(element) ) { // player has
+          has = true;
+          player.inventory.splice( player.inventory.indexOf(element), 1 ); // remove from inventory
+          game.map[player.position.x][player.position.y][player.position.z].contents.push(element); // add to room
         }
-        displayOutput("yeah");
-      } else {
-        displayOutput("You do not have a " + element + " in your inventory.");
       }
-      console.log("drop thing");
     });
-    // } else {
-    //   displayOutput("I do not know what a " + element + " is.");
-    // }
-    // if ( input.includes(element) ) {
-    //
-    // }
-
-    // displayOutput("drop WHAT");
-    // document.getElementById("bar").value = "";
-    // let i = document.getElementById("bar").value;
-    // displayOutput(">>>" + i);
-    // input.toLowerCase();
-    // console.log(i);
-    // //document.getElementById("bar").value = "";
-    // //window.scrollTo(0,document.body.scrollHeight);
-    // //console.log("no");
-    // checkInput();
-    // displayOutput("yes");
-    // // let coherent = false;
-    // // if ( input.includes(element) ) {
-    // //   coherent = true;
-    // // } else {
-    // //
-    // // }
-    //displayOutput("drop what");
+    if ( !valid ) {
+      displayOutput("I do not know what that is.");
+    } else if ( !has ) {
+      displayOutput("You do not have that in your inventory.");
+    }
   } else if ( input.includes("keep") ) {
-    displayOutput("keep what");
+    let valid = false;
+    let here = false;
+    objects.forEach(function(element) {
+      if ( input.includes(element) ) { // valid
+        valid = true;
+        if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) { // in room
+          here = true;
+          game.map[player.position.x][player.position.y][player.position.z].contents.splice( game.map[player.position.x][player.position.y][player.position.z].contents.indexOf(element), 1 ); // remove from room
+          player.inventory.push(element); // add to inventory
+        }
+      }
+    });
+    if ( !valid ) {
+      displayOutput("I do not know what that is.");
+    } else if ( !here ) {
+      displayOutput("You do not see that in this room.");
+    }
   } else if ( (input === "restart") || (input === "again") || (input === "new game") || (input === "quit") ) {
     displayOutput("I knew you would give up, you miserable shrimp. QUITTER");
     displayOutput(" ");
@@ -303,7 +291,6 @@ window.addEventListener("keypress", function(event){
   switch(event.keyCode){
     case 13:
       checkInput();
-      console.log("enter");
       break;
     default:
       return;

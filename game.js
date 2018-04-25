@@ -288,6 +288,12 @@ function generateRandomInt(max){
   return Math.floor(Math.random() * max);
 }
 
+function JSVector(x, y, z){
+  this.x = x;
+  this.y = y;
+  this.z = z;
+}
+
 function displayOutput(output){
   document.getElementById("story").appendChild(document.createTextNode(output));
   document.getElementById("story").appendChild(document.createElement("br"));

@@ -26,6 +26,13 @@ function init() {
 
 
 
+function animate() {
+  requestAnimationFrame(animate);
+}
+
+
+
+// Process Input
 function checkInput() {
   var input = document.getElementById("bar").value;
   displayOutput(">>>" + input);
@@ -38,12 +45,6 @@ function checkInput() {
   displayOutput(" ");
   document.getElementById("bar").value = "";
   window.scrollTo(0,document.body.scrollHeight);
-}
-
-
-
-function animate() {
-  requestAnimationFrame(animate);
 }
 
 
@@ -63,7 +64,6 @@ function Game() {
         }
       }
     }
-    //organize
   }
 }
 
@@ -125,6 +125,9 @@ function Player() {
   }
 }
 
+
+
+// Compute Input
 function doCommand(input) {
   if ( input.includes("inventory") || input.includes("stuff") ) {
     player.inventory.forEach(function(element){

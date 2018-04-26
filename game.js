@@ -213,7 +213,7 @@ function doCommand(input) {
       displayOutput("Dropped.");
     }
   } else if ( input.includes("keep") ) {
-    if ( player.inventory.length === 3 ) {
+    if ( player.inventory.length === gameConfig.maxPlayerInventory ) {
       displayOutput("You are too weak to carry anything else.");
     } else {
       let valid = false;

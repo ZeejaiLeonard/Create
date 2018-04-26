@@ -1,4 +1,5 @@
 window.onload = init;
+// Global Vars
 var game = new Game();
 var player = new Player();
 var mapConfig = {
@@ -14,6 +15,7 @@ var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken cryst
 var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase", "hole", "door"];
 
 
+
 function init() {
   displayOutput("You are in a room.");
   displayOutput(" ");
@@ -21,6 +23,7 @@ function init() {
   player.init();
   animate();
 }
+
 
 
 function checkInput() {
@@ -37,8 +40,6 @@ function checkInput() {
   window.scrollTo(0,document.body.scrollHeight);
 }
 
-
-//KEEP: check player inventory capacity
 
 
 function animate() {
@@ -67,6 +68,7 @@ function Game() {
 }
 
 
+
 //Room
 function Room() {
   this.init = function(name, vector) {
@@ -77,9 +79,7 @@ function Room() {
     this.validMoves = [];
     this.scene = "";
 
-    var object = new Object();
-    object.init(objects[generateRandomInt(objects.length)]);
-    this.contents.push(object);
+    this.contents.push(objects[generateRandomInt(objects.length)]);
     this.features.push(features[generateRandomInt(features.length)]);
 
     if ( vector.z < mapConfig.z - 1 ) {
@@ -105,34 +105,12 @@ function Room() {
   this.look = function(){
     let stuff = "";
     this.contents.forEach ( function(element) {
-      stuff += element.name + ", ";
+      stuff += element + ", ";
     } );
     this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains: " + stuff + ".";
     displayOutput(this.scene);
   }
 }
-
-
-//Object
-function Object() {
-  this.init = function(name) {
-    this.name = name;
-    this.weapon = false;
-    this.light = false;
-    this.open = false;
-    this.magic = false;
-    if ( (name === "shiny sword") || (name === "rusty dagger") ) {
-      this.weapon = true;
-    } else if ( name === "key" ) {
-      this.open = true;
-    } else if ( (name === "flashlight") || (name === "battery-operated lantern") ) {
-      this.light = true;
-    } else if ( (name === "mysterious potion") || (name === "broken crystal") ) {
-      this.magic = true;
-    }
-  }
-}
-
 
 
 
@@ -153,12 +131,12 @@ function doCommand(input) {
       displayOutput(element);
     });
     if ( !player.inventory.length ) {
-      displayOutput("You don't have any material possessions.");
+      displayOutput("You do not have any material possessions.");
     }
   } else if ( input.includes("east") || (input === "e") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("e")) {
       player.update(player.position.x + 1, player.position.y, player.position.z);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("You imbecile");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -167,7 +145,7 @@ function doCommand(input) {
   } else if ( input.includes("west") || (input === "w") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("w")) {
       player.update(player.position.x - 1, player.position.y, player.position.z);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("You trilobite");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -176,7 +154,7 @@ function doCommand(input) {
   } else if ( input.includes("north") || (input === "n") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("n")) {
       player.update(player.position.x, player.position.y - 1, player.position.z);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("YOU FOOL");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -185,7 +163,7 @@ function doCommand(input) {
   } else if ( input.includes("south") || (input === "s") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("s")) {
       player.update(player.position.x, player.position.y + 1, player.position.z);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("Ya dumb meatball");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -194,7 +172,7 @@ function doCommand(input) {
   } else if ( input.includes("up") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
       player.update(player.position.x, player.position.y, player.position.z - 1);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("I smell a GNASHGAB (it's a real word--look it up) ");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -203,7 +181,7 @@ function doCommand(input) {
   } else if ( input.includes("down") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
       player.update(player.position.x, player.position.y, player.position.z + 1);
-      displayOutput(player.position.x  + "" + player.position.y + "" + player.position.z);
+      game.map[player.position.x][player.position.y][player.position.z].look();
     } else {
       displayOutput("Back in my day, noodles weren't THIS stupid");
       displayOutput("Are you trying to get a concussion? Honestly.");
@@ -227,25 +205,33 @@ function doCommand(input) {
     if ( !valid ) {
       displayOutput("I do not know what that is.");
     } else if ( !has ) {
-      displayOutput("You do not have that in your inventory.");
+      displayOutput("You do not have that.");
+    } else {
+      displayOutput("Dropped.");
     }
   } else if ( input.includes("keep") ) {
-    let valid = false;
-    let here = false;
-    objects.forEach(function(element) {
-      if ( input.includes(element) ) { // valid
-        valid = true;
-        if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) { // in room
-          here = true;
-          game.map[player.position.x][player.position.y][player.position.z].contents.splice( game.map[player.position.x][player.position.y][player.position.z].contents.indexOf(element), 1 ); // remove from room
-          player.inventory.push(element); // add to inventory
+    if ( player.inventory.length === 3 ) {
+      displayOutput("You are too weak to carry anything else.");
+    } else {
+      let valid = false;
+      let here = false;
+      objects.forEach(function(element) {
+        if ( input.includes(element) ) { // valid
+          valid = true;
+          if ( game.map[player.position.x][player.position.y][player.position.z].contents.includes(element) ) { // in room
+            here = true;
+            game.map[player.position.x][player.position.y][player.position.z].contents.splice( game.map[player.position.x][player.position.y][player.position.z].contents.indexOf(element), 1 ); // remove from room
+            player.inventory.push(element); // add to inventory
+          }
         }
+      });
+      if ( !valid ) {
+        displayOutput("I do not know what that is.");
+      } else if ( !here ) {
+        displayOutput("You do not see that.");
+      } else {
+        displayOutput("Kept.");
       }
-    });
-    if ( !valid ) {
-      displayOutput("I do not know what that is.");
-    } else if ( !here ) {
-      displayOutput("You do not see that in this room.");
     }
   } else if ( (input === "restart") || (input === "again") || (input === "new game") || (input === "quit") ) {
     displayOutput("I knew you would give up, you miserable shrimp. QUITTER");

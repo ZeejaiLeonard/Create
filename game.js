@@ -104,11 +104,11 @@ function Room() {
 
   this.look = function(){
     let stuff = "";
-    this.contents.forEach ( function(element) {
-      stuff += element + ", ";
-    } );
-    this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains: " + stuff + ".";
+    this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains: ";
     displayOutput(this.scene);
+    this.contents.forEach ( function(element) {
+      displayOutput(element);
+    } );
   }
 }
 

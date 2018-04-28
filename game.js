@@ -106,6 +106,9 @@ function Room() {
     let stuff = "";
     this.scene = "You are in a " + this.name + ", it features a " + this.features[0] + ", and contains: ";
     displayOutput(this.scene);
+    if ( this.contents.length === 0) {
+      displayOutput("nothing.")
+    } else
     this.contents.forEach ( function(element) {
       displayOutput(element);
     } );

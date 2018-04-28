@@ -9,7 +9,7 @@ var mapConfig = {
 }
 var gameConfig = {
   maxPlayerInventory: 3,
-  specialIngredient: "key"
+  specialIngredient: "banana slug"
 }
 var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom", "cavern", "dingy library", "musty cellar", "empty vault", "putrid crypt"];
 var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern", "mom's spaghetti", "banana slug"];

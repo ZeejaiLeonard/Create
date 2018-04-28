@@ -8,11 +8,12 @@ var mapConfig = {
   z: 2
 }
 var gameConfig = {
-  maxPlayerInventory: 3
+  maxPlayerInventory: 3,
+  specialIngredient: "key"
 }
-var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom", "cavern"];
+var rooms = ["hall", "dungeon", "waterfall", "kitchen", "dining area", "primitive bathroom", "cavern", "dingy library", "musty cellar", "empty vault", "putrid crypt"];
 var objects = ["shiny sword", "rusty dagger", "mysterious potion", "broken crystal", "flashlight", "key", "battery-operated lantern", "mom's spaghetti", "banana slug"];
-var features = ["trap door", "window", "refrigerator", "portal", "rickety staircase", "hole", "door"];
+var features = ["trap door", "window to nowhere", "refrigerator", "portal", "rickety staircase", "hole", "squeaky door"];
 
 
 
@@ -40,11 +41,36 @@ function checkInput() {
     displayOutput("DON'T YOU DARE RAISE YOUR VOICE AT ME");
   }
   input = input.toLowerCase();
-
   doCommand(input);
   displayOutput(" ");
   document.getElementById("bar").value = "";
   window.scrollTo(0,document.body.scrollHeight);
+  if ( !player.win ) {
+    // be normal
+  } else if ( player.win && player.inventory.includes(gameConfig.specialIngredient) ) {
+      displayOutput("THIS CRETIN FINALLY MADE IT");
+      displayOutput("I NEVER THOUGHT THIS DAY WOULD COME");
+      displayOutput("HONEY, COME LOOK");
+      displayOutput("Aw, won't you play again, sweetheart?");
+      displayOutput(" ");
+      displayOutput(" ");
+      displayOutput(" ");
+      displayOutput(" ");
+      document.getElementById("bar").value = "";
+      window.scrollTo(0,document.body.scrollHeight);
+      init();
+    } else if ( player.win && !player.inventory.includes("key") ) {
+      displayOutput("You came so close");
+      displayOutput("But alas...");
+      displayOutput("...you do not have the secret ingredient");
+      displayOutput("Keep trying I suppose");
+      displayOutput("*whispers under breath*");
+      displayOutput("But there's really no hope");
+      displayOutput(" ");
+      document.getElementById("bar").value = "";
+      window.scrollTo(0,document.body.scrollHeight);
+      player.win = false;
+    }
 }
 
 
@@ -53,6 +79,7 @@ function checkInput() {
 function Game() {
   this.init = function() {
     this.map = [];
+    this.escape = new JSVector( generateRandomInt(mapConfig.x), generateRandomInt(mapConfig.y), generateRandomInt(mapConfig.z) );
     for (var i = 0; i < mapConfig.x; i++) { //across
       this.map.push([]);
       for (var j = 0; j < mapConfig.y; j++) { //down
@@ -122,9 +149,13 @@ function Player() {
   this.init = function() {
     this.position = new JSVector(0, 0, 0);
     this.inventory = [];
+    this.win = false;
   }
   this.update = function(x, y, z) {
     this.position = new JSVector(x, y, z);
+    if ( this.position.x === game.escape.x && this.position.y === game.escape.y && this.position.z === game.escape.z ) {
+      this.win = true;
+    }
   }
 }
 
@@ -175,7 +206,7 @@ function doCommand(input) {
       displayOutput("Are you trying to get a concussion? Honestly.");
       displayOutput("Last I checked, you are not able to go through walls.");
     }
-  } else if ( input.includes("up") ) {
+  } else if ( input.includes("up") || (input === "u") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("u")) {
       player.update(player.position.x, player.position.y, player.position.z - 1);
       game.map[player.position.x][player.position.y][player.position.z].look();
@@ -184,7 +215,7 @@ function doCommand(input) {
       displayOutput("Are you trying to get a concussion? Honestly.");
       displayOutput("Last I checked, you are not able to go through the ceiling.");
     }
-  } else if ( input.includes("down") ) {
+  } else if ( input.includes("down") || (input === "d") ) {
     if (game.map[player.position.x][player.position.y][player.position.z].validMoves.includes("d")) {
       player.update(player.position.x, player.position.y, player.position.z + 1);
       game.map[player.position.x][player.position.y][player.position.z].look();
